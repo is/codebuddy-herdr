@@ -8,33 +8,6 @@ This plugin reports CodeBuddy's live state to Herdr so the Herdr sidebar,
 doing. It also stores a resumable session command and cleanly releases the pane
 on exit.
 
-## What it reports
-
-| CodeBuddy event   | Herdr state  | Notes |
-| ---               | ---          | ---   |
-| SessionStart      | `idle`       | also stores `codebuddy --resume <session_id>` so Herdr can reopen the session after a restart |
-| UserPromptSubmit  | `working`    | |
-| PreToolUse        | `working`    | |
-| Stop              | `idle`       | |
-| Notification (permission / prompt / decision) | `blocked` | surfaces the pending question as the message |
-| SessionEnd        | release      | clears the agent from the pane |
-
-These states show up in the Herdr sidebar and `herdr agent list`, and drive
-`herdr agent wait`.
-
-## How it works
-
-- CodeBuddy fires hook events; `hooks/hooks.json` runs
-  `node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js" || true` for each of the
-  six events above. The `|| true` and the script's own error-swallowing keep
-  your session safe even if Herdr is unavailable.
-- `src/herdr-report.ts` is the TypeScript source; its checked-in build output,
-  `bin/herdr-report.js`, reads the hook JSON from stdin and talks **directly to
-  the Herdr local socket API** (`HERDR_SOCKET_PATH`) using newline-delimited
-  JSON — not the slower `herdr` CLI. It is a no-op unless `HERDR_ENV=1`.
-- The integration source is `codebuddy` (the reserved `herdr:` prefix is for
-  Herdr's own integrations).
-
 ## Install
 
 ### Normal (packaged)
@@ -71,7 +44,34 @@ bash script/install-dev.sh
 ```
 
 > CodeBuddy keeps a hash-based plugin cache. A full CodeBuddy restart can replace
-the symlink with a copy — just re-run `script/install-dev.sh` to restore it.
+> the symlink with a copy — just re-run `script/install-dev.sh` to restore it.
+
+## What it reports
+
+| CodeBuddy event   | Herdr state  | Notes |
+| ---               | ---          | ---   |
+| SessionStart      | `idle`       | also stores `codebuddy --resume <session_id>` so Herdr can reopen the session after a restart |
+| UserPromptSubmit  | `working`    | |
+| PreToolUse        | `working`    | |
+| Stop              | `idle`       | |
+| Notification (permission / prompt / decision) | `blocked` | surfaces the pending question as the message |
+| SessionEnd        | release      | clears the agent from the pane |
+
+These states show up in the Herdr sidebar and `herdr agent list`, and drive
+`herdr agent wait`.
+
+## How it works
+
+- CodeBuddy fires hook events; `hooks/hooks.json` runs
+  `node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js" || true` for each of the
+  six events above. The `|| true` and the script's own error-swallowing keep
+  your session safe even if Herdr is unavailable.
+- `src/herdr-report.ts` is the TypeScript source; its checked-in build output,
+  `bin/herdr-report.js`, reads the hook JSON from stdin and talks **directly to
+  the Herdr local socket API** (`HERDR_SOCKET_PATH`) using newline-delimited
+  JSON — not the slower `herdr` CLI. It is a no-op unless `HERDR_ENV=1`.
+- The integration source is `codebuddy` (the reserved `herdr:` prefix is for
+  Herdr's own integrations).
 
 ## Usage
 
