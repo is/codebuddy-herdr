@@ -16,7 +16,7 @@ and `herdr agent wait` reflect CodeBuddy's real status:
 | PreToolUse        | working      |
 | PostToolUse       | working      |
 | Stop              | idle         |
-| Notification (permission/prompt/decision) | blocked |
+| Notification (permission/prompt/decision) | blocked (but idle_prompt -> idle) |
 | SessionEnd        | release agent |
 
 ## Architecture (read this before changing code)

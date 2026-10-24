@@ -128,6 +128,17 @@ test("PostToolUse clears a prior blocked Notification", async (t) => {
   );
 });
 
+test("idle_prompt Notification reports idle, not blocked", async (t) => {
+  const f = await fixture();
+  t.after(() => f.close());
+  await invoke({ hook_event_name: "Notification", notification_type: "idle_prompt", message: "CodeBuddy is waiting for your input" }, f.env);
+  await waitForRequests(f.requests, 1);
+  const { method, params } = f.requests[0].request;
+  assert.equal(method, "pane.report_agent");
+  assert.equal(params.state, "idle");
+  assert.equal(params.message, undefined);
+});
+
 test("irrelevant notifications and processes outside Herdr are no-ops", async (t) => {
   const f = await fixture();
   t.after(() => f.close());

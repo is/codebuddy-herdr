@@ -211,7 +211,12 @@ async function main(): Promise<void> {
   }
   if (event === "Notification") {
     const notificationType = asString(hook.notification_type).toLowerCase();
-    if (/(permission|prompt|decision)/.test(notificationType)) {
+    if (notificationType === "idle_prompt") {
+      // idle_prompt means the agent finished and awaits the user's next input;
+      // it is not blocked. Report idle, else the "prompt" substring below would
+      // misclassify a finished turn as blocked (a sticky wrong state).
+      await reportState(pane, "idle");
+    } else if (/(permission|prompt|decision)/.test(notificationType)) {
       await reportState(pane, "blocked", asString(hook.message) || "needs input");
     }
     return;
