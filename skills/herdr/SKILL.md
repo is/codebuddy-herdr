@@ -26,8 +26,8 @@ reports three things to Herdr via
 its socket API (pane.report_agent, pane.report_agent_session,
 pane.release_agent):
 
-1. State: working on UserPromptSubmit or PreToolUse, idle on Stop, blocked on a
-   permission or decision Notification.
+1. State: working on UserPromptSubmit, PreToolUse, or PostToolUse, idle on Stop,
+   blocked on a permission or decision Notification.
 2. Resume command: on SessionStart it stores "codebuddy --resume SESSION_ID" so
    Herdr can reopen the same session after a server restart.
 3. Release: on SessionEnd it clears the agent from the pane.

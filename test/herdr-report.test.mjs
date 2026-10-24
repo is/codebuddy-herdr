@@ -113,6 +113,21 @@ test("state and release hook mappings match the Herdr protocol", async (t) => {
   );
 });
 
+test("PostToolUse clears a prior blocked Notification", async (t) => {
+  const f = await fixture();
+  t.after(() => f.close());
+  await invoke({ hook_event_name: "Notification", notification_type: "PermissionPrompt", message: "Allow write?" }, f.env);
+  await invoke({ hook_event_name: "PostToolUse" }, f.env);
+  await waitForRequests(f.requests, 2);
+  assert.deepEqual(
+    f.requests.map(({ request }) => [request.method, request.params.state, request.params.message]),
+    [
+      ["pane.report_agent", "blocked", "Allow write?"],
+      ["pane.report_agent", "working", undefined],
+    ],
+  );
+});
+
 test("irrelevant notifications and processes outside Herdr are no-ops", async (t) => {
   const f = await fixture();
   t.after(() => f.close());

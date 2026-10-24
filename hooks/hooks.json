@@ -30,6 +30,16 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [

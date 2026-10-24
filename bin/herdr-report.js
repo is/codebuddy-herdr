@@ -175,7 +175,7 @@ async function main() {
         });
         return;
     }
-    if (event === "UserPromptSubmit" || event === "PreToolUse") {
+    if (event === "UserPromptSubmit" || event === "PreToolUse" || event === "PostToolUse") {
         await reportState(pane, "working");
         return;
     }
