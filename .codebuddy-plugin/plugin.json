@@ -1,6 +1,6 @@
 {
   "name": "codebuddy-herdr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Makes CodeBuddy a first-class citizen in Herdr. Reports idle/working/blocked state, a resumable session command, and a clean release on exit through Herdr's local socket API, so the Herdr sidebar, `herdr agent list`, and `herdr agent wait` work with CodeBuddy.",
   "author": "codebuddy-herdr contributors"
 }
