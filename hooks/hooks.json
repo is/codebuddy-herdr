@@ -1,0 +1,64 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+          }
+        ]
+      }
+    ]
+  }
+}
