@@ -39,6 +39,21 @@ These states show up in the Herdr sidebar and `herdr agent list`, and drive
 
 ### Normal (packaged)
 
+Install directly from the source repository on cnb.cool:
+
+```bash
+codebuddy plugin add https://cnb.cool/io8/codebuddy-herdr -y
+codebuddy plugin enable codebuddy-herdr
+```
+
+> No `.git` suffix is needed — CodeBuddy treats the URL as a git repository
+> automatically. The plugin installs under an ID like
+> `codebuddy-herdr@git-<hash>` and is disabled by default; `plugin enable`
+> (shown above) activates it. Run `/reload-plugins` (or start a new session)
+> to apply.
+
+You can also install from a local path or any other git repo:
+
 ```bash
 codebuddy plugin add <path-or-repo> -y
 codebuddy plugin enable codebuddy-herdr
