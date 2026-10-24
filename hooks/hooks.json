@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }
@@ -35,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }
@@ -45,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }
@@ -55,7 +55,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py\" || true"
+            "command": "node \"$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js\" || true"
           }
         ]
       }

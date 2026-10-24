@@ -21,7 +21,8 @@ Every process in a Herdr pane inherits these environment variables:
 | HERDR_BIN_PATH | The Herdr binary that owns the pane |
 | HERDR_SOCKET_PATH | Herdr local API socket (Unix socket) |
 
-The plugin hook script (bin/herdr-report.py) reports three things to Herdr via
+The plugin hook script (bin/herdr-report.js, built from src/herdr-report.ts)
+reports three things to Herdr via
 its socket API (pane.report_agent, pane.report_agent_session,
 pane.release_agent):
 
@@ -43,7 +44,7 @@ If the user says CodeBuddy is not showing up in Herdr, or state looks wrong:
 4. Manually exercise a report:
 
    echo '{"hook_event_name":"PreToolUse","session_id":"test"}' \
-     | python3 "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py"
+     | node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js"
    herdr pane get "$HERDR_PANE_ID"
 
 Do not call "herdr pane report-agent" from model actions unless the user asks

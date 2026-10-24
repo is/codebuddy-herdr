@@ -20,13 +20,14 @@ and `herdr agent wait` reflect CodeBuddy's real status:
 
 ## Architecture (read this before changing code)
 
-- `bin/herdr-report.py` — the only runtime logic. It is invoked by **every**
-  hook event (see `hooks/hooks.json`) with the hook JSON on stdin. It talks
+- `src/herdr-report.ts` — the reporter source. Its committed Node build output,
+  `bin/herdr-report.js`, is invoked by **every** hook event (see
+  `hooks/hooks.json`) with the hook JSON on stdin. It talks
   **directly to the Herdr socket API** (`HERDR_SOCKET_PATH`) using
   newline-delimited JSON — NOT the `herdr` CLI, which is slower and not meant
   for high-frequency reporting.
 - `hooks/hooks.json` — wires the 6 events above to the reporter. The hook
-  command is `python3 "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py" || true`,
+  command is `node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js" || true`,
   so a failure never breaks the user's session.
 - `commands/herdr-status.md` — the `/codebuddy-herdr:herdr-status` command,
   a read-only helper that shows how this session appears inside Herdr.
@@ -64,7 +65,7 @@ echo "HERDR_ENV=$HERDR_ENV PANE=$HERDR_PANE_ID"
 
 # Drive a state transition manually
 echo '{"hook_event_name":"PreToolUse","session_id":"test"}' \
-  | python3 "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py"
+  | node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js"
 herdr pane get "$HERDR_PANE_ID"
 herdr agent list
 ```

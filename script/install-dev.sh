@@ -19,28 +19,19 @@ SOURCE="$(cd "$SCRIPT_DIR/.." && pwd)"
 CB_HOME="${CODEBUDDY_HOME:-$HOME/.codebuddy}"
 INSTALLED_JSON="$CB_HOME/plugins/installed_plugins.json"
 
-PLUGIN_NAME="$(python3 -c "import json;print(json.load(open('$SOURCE/.codebuddy-plugin/plugin.json'))['name'])")"
+PLUGIN_NAME=$(node -e 'const fs = require("fs"); console.log(JSON.parse(fs.readFileSync(process.argv[1], "utf8")).name)' "$SOURCE/.codebuddy-plugin/plugin.json")
 
 echo "Plugin source: $SOURCE"
 echo "Plugin name:   $PLUGIN_NAME"
 
 # 1) Install locally if not already present.
-if [ ! -f "$INSTALLED_JSON" ] || ! python3 -c "import json,sys; d=json.load(open('$INSTALLED_JSON')); sys.exit(0 if any(k.startswith('$PLUGIN_NAME@') for k in d.get('plugins',{})) else 1)"; then
+if [ ! -f "$INSTALLED_JSON" ] || ! node -e 'const fs = require("fs"); const [installed, name] = process.argv.slice(1); const data = JSON.parse(fs.readFileSync(installed, "utf8")); process.exit(Object.keys(data.plugins || {}).some((key) => key.startsWith(`${name}@`)) ? 0 : 1)' "$INSTALLED_JSON" "$PLUGIN_NAME"; then
   echo "Plugin not installed yet; installing locally (codebuddy plugin add)..."
   codebuddy plugin add "$SOURCE" -y || true
 fi
 
 # 2) Locate the installed cache path (the runtime load path) from the registry.
-CACHE_PATH="$(python3 - "$INSTALLED_JSON" "$PLUGIN_NAME" <<'PY'
-import json, sys
-inst, name = sys.argv[1], sys.argv[2]
-d = json.load(open(inst))
-for key, entries in d.get('plugins', {}).items():
-    if key.startswith(name + '@'):
-        print(entries[0]['installPath'])
-        break
-PY
-)"
+CACHE_PATH=$(node -e 'const fs = require("fs"); const [installed, name] = process.argv.slice(1); const data = JSON.parse(fs.readFileSync(installed, "utf8")); const entry = Object.entries(data.plugins || {}).find(([key]) => key.startsWith(`${name}@`)); if (entry) console.log(entry[1][0].installPath)' "$INSTALLED_JSON" "$PLUGIN_NAME")
 
 if [ -z "$CACHE_PATH" ]; then
   echo "ERROR: could not find installPath for $PLUGIN_NAME in $INSTALLED_JSON" >&2
@@ -51,8 +42,11 @@ fi
 #    cache/           <market>/<name>/<version>
 #    package-sources/<market>/versions/<version>/package
 VERSION_DIR="$(basename "$CACHE_PATH")"
-ROOT="$(dirname "$(dirname "$(dirname "$(dirname "$CACHE_PATH")"))")"
-MARKET="$(basename "$(dirname "$(dirname "$CACHE_PATH")"))"
+CACHE_PARENT="$(dirname "$CACHE_PATH")"
+MARKET_PARENT="$(dirname "$CACHE_PARENT")"
+MARKET="$(basename "$MARKET_PARENT")"
+CACHE_ROOT="$(dirname "$MARKET_PARENT")"
+ROOT="$(dirname "$CACHE_ROOT")"
 PKG_SRC="$ROOT/package-sources/$MARKET/versions/$VERSION_DIR/package"
 
 echo "Cache path:      $CACHE_PATH"
@@ -73,16 +67,7 @@ relink "$SOURCE" "$CACHE_PATH"
 relink "$SOURCE" "$PKG_SRC"
 
 # 4) Enable the plugin.
-PLUGIN_ID="$(python3 - "$INSTALLED_JSON" "$PLUGIN_NAME" <<'PY'
-import json, sys
-inst, name = sys.argv[1], sys.argv[2]
-d = json.load(open(inst))
-for key in d.get('plugins', {}):
-    if key.startswith(name + '@'):
-        print(key)
-        break
-PY
-)"
+PLUGIN_ID=$(node -e 'const fs = require("fs"); const [installed, name] = process.argv.slice(1); const data = JSON.parse(fs.readFileSync(installed, "utf8")); const key = Object.keys(data.plugins || {}).find((candidate) => candidate.startsWith(`${name}@`)); if (key) console.log(key)' "$INSTALLED_JSON" "$PLUGIN_NAME")
 echo "Enabling $PLUGIN_ID ..."
 codebuddy plugin enable "$PLUGIN_ID" || true
 

@@ -25,10 +25,11 @@ These states show up in the Herdr sidebar and `herdr agent list`, and drive
 ## How it works
 
 - CodeBuddy fires hook events; `hooks/hooks.json` runs
-  `python3 "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.py" || true` for each of the
+  `node "$CODEBUDDY_PLUGIN_ROOT/bin/herdr-report.js" || true` for each of the
   six events above. The `|| true` and the script's own error-swallowing keep
   your session safe even if Herdr is unavailable.
-- `bin/herdr-report.py` reads the hook JSON from stdin and talks **directly to
+- `src/herdr-report.ts` is the TypeScript source; its checked-in build output,
+  `bin/herdr-report.js`, reads the hook JSON from stdin and talks **directly to
   the Herdr local socket API** (`HERDR_SOCKET_PATH`) using newline-delimited
   JSON — not the slower `herdr` CLI. It is a no-op unless `HERDR_ENV=1`.
 - The integration source is `codebuddy` (the reserved `herdr:` prefix is for
@@ -75,7 +76,8 @@ this pane, and explains the current state.
 codebuddy-herdr/
 ├── .codebuddy-plugin/plugin.json   # plugin manifest
 ├── hooks/hooks.json                # wires 6 hook events to the reporter
-├── bin/herdr-report.py             # the reporter (Herdr socket API)
+├── src/herdr-report.ts              # TypeScript reporter source
+├── bin/herdr-report.js              # prebuilt Node runtime for hooks
 ├── commands/herdr-status.md        # /codebuddy-herdr:herdr-status helper
 ├── skills/herdr/SKILL.md           # debugging reference skill
 └── script/install-dev.sh           # dev install (symlink) script
@@ -85,7 +87,9 @@ codebuddy-herdr/
 
 - CodeBuddy with plugin support.
 - Herdr 0.9+ running the pane (state is only reported when `HERDR_ENV=1`).
-- `python3` available on PATH (the reporter is plain Python 3, stdlib only).
+- Node.js 18+ and the standard Unix `flock` utility available on PATH. The
+  packaged runtime has no npm dependencies; TypeScript is only needed to build
+  from source (`npm ci && npm run build`).
 
 ## License
 
