@@ -32,6 +32,18 @@ codebuddy plugin add <path-or-repo> -y
 codebuddy plugin enable codebuddy-herdr
 ```
 
+#### From a GitHub HTTPS repo
+
+This project is also mirrored on GitHub — install directly over HTTPS:
+
+```bash
+codebuddy plugin add https://github.com/is/codebuddy-herdr -y
+codebuddy plugin enable codebuddy-herdr
+```
+
+> No `.git` suffix required. To pin to a branch, tag, or commit, append
+> `#<ref>` (e.g. `.../codebuddy-herdr#main` or `.../codebuddy-herdr#v1.2.3`).
+
 ### Dev (live symlink)
 
 For local development, `script/install-dev.sh` installs the plugin and replaces
