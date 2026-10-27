@@ -32,7 +32,7 @@ pane.release_agent):
    Herdr can reopen the same session after a server restart.
 3. Release: on SessionEnd it clears the agent from the pane.
 
-The plugin source is "herdr:codebuddy", the official CodeBuddy integration identity.
+The plugin source is "codebuddy"; it must not use the reserved "herdr:" prefix.
 
 ## Debugging
 

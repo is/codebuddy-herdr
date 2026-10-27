@@ -13,7 +13,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import net from "node:net";
 
-const SOURCE = "herdr:codebuddy";
+const SOURCE = "codebuddy";
 const AGENT = "CodeBuddy";
 const RESUME_BIN = "codebuddy";
 const SOCKET_TIMEOUT_MS = 500;
