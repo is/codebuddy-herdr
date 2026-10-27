@@ -40,8 +40,8 @@ and `herdr agent wait` reflect CodeBuddy's real status:
 
 ## Hard rules
 
-1. **Never use the reserved `herdr:` source prefix.** The reporter's source is
-   `"codebuddy"`. Herdr reserves `herdr:` for its own integrations.
+1. **Use the reserved Herdr integration source.** The reporter's source is
+   `"herdr:codebuddy"`; it is recognized as the official CodeBuddy integration.
 2. **No-op unless `HERDR_ENV=1`.** Outside Herdr the reporter exits 0
    immediately. Do not add side effects that run outside Herdr.
 3. **Never block the user's session.** The reporter swallows all errors, uses a

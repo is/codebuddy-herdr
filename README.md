@@ -82,8 +82,8 @@ These states show up in the Herdr sidebar and `herdr agent list`, and drive
   `bin/herdr-report.js`, reads the hook JSON from stdin and talks **directly to
   the Herdr local socket API** (`HERDR_SOCKET_PATH`) using newline-delimited
   JSON — not the slower `herdr` CLI. It is a no-op unless `HERDR_ENV=1`.
-- The integration source is `codebuddy` (the reserved `herdr:` prefix is for
-  Herdr's own integrations).
+- The integration source is `herdr:codebuddy`, the official CodeBuddy integration
+  identity recognized by Herdr.
 
 ## Usage
 

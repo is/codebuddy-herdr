@@ -80,7 +80,7 @@ test("SessionStart reports idle with a valid resume command", async (t) => {
   assert.equal(method, "pane.report_agent");
   assert.deepEqual(params, {
     pane_id: "pane:test",
-    source: "codebuddy",
+    source: "herdr:codebuddy",
     agent: "CodeBuddy",
     state: "idle",
     agent_session_id: "session-1",
